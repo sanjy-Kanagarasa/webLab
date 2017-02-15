@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Express</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script>
+      var app = angular.module("app", []);
+      app.controller('MainController', function ($scope, $http) {
+        $scope.result = [];
+        $http.get("http://localhost:3000/api/users").success(function (res) {
+          // Doe iets met resultaat 'res'
+          $scope.result = res;
+        });
+
+        $scope.newperson = {};
+        $scope.addPerson = function() {
+          $http.post("http://localhost:3000/api/user",
+              { 'lastname': $scope.newperson.name, 'firstname': $scope.newperson.firstname }
+          ).success(function (res) {
+            $scope.result = res;
+          });
+        }
+
+        $scope.deleteUser = function(user) {
+          $http.post('http://localhost:3000/api/deleteUser', user).success(function(res) {
+            $scope.result = res;
+          });
+        };
+
+      });
+    </script>
+  </head>
+  <body ng-app="app">
+    <div ng-controller="MainController">
+      <h2>Personen</h2>
+      <ul>
+        <li ng-repeat="user in result">{{ user.name }} {{ user.firstname }} <button ng-click="deleteUser(user)">Delete</button></li>
+      </ul>
+
+      <h2>Nieuwe persoon toevoegen</h2>
+      <form>
+        <input ng-model="newperson.name" placeholder="Achternaam" type="text" />
+        <input ng-model="newperson.firstname" placeholder="Voornaam" type="text" />
+        <button ng-click="addPerson()">Voeg toe</button>
+    </div>
+  </body>
+</html>
+
