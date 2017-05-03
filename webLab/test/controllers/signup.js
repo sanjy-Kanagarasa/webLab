@@ -1,4 +1,4 @@
-var ip = "http://81.165.123.247:3000";
+var ip = "http://localhost:3000";
 app.controller('signup', function($scope, $http, $location){
     $scope.user = {
         'firstname' : '',
@@ -55,18 +55,22 @@ app.controller('signup', function($scope, $http, $location){
         $location.path('/signin');
     }
     $scope.signup = function(){
-        $http.post(ip + '/api/createUser', $scope.user).then(function(res){
-            alert('ok');
+        $http.post(ip + '/api/createUser', $scope.user).success(function(res){
+            //alert('ok');
+            
         }).error(function(err){
-            alert('err');
+            //alert('err');
         });
     }
-     $scope.test = function () {
+     $scope.verify = function () {
          var to = "sanjy94@gmail.com"
-         $http.get(ip + "/send?to="+to)
+         if($scope.user.email != null && $scope.user.email != ""){
+             $http.get(ip + "/send?to="+$scope.user.email)
              .then(function (response) {
                  $scope.myWelcome = response.data;
              console.log(response.data);
-             });
+             });  
+         }
+        console.log($scope.user.email); 
      }
 });
