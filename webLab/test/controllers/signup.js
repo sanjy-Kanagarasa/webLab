@@ -1,4 +1,4 @@
-var ip = "http://localhost:3000";
+var ip = "http://ip-project.ddns.net:3000";
 app.controller('signup', function($scope, $http, $location){
     $scope.user = {
         'firstname' : '',
